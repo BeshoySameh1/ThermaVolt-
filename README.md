@@ -1,33 +1,33 @@
 
 **Architecture principle:** RAG is a knowledge/evidence layer that resolves missing parameters; deterministic physics, constraints, optimization and thermal diagnosis remain outside the LLM and are independently reproducible.
-# Thermal Fault Diagnosis and Propagation Analysis Toolkit (`tcf`)
+# Thermal Fault Diagnosis and Propagation Analysis Toolkit (`thermavolt`)
 
 **find what caused the heating, where it started, and how it spread.** It reads eCalc configurations, audits every component against datasheets and documented real-world use, and plots the thermal propagation curve and electric-load-versus-thermal-loss relationships to validate propagation performance with less heat.
 
 ## Table of Contents
 
-1. [Overview](https://www.google.com/search?q=%231-overview)
-2. [Core Principles and Scope Limits](https://www.google.com/search?q=%232-core-principles-and-scope-limits)
-3. [System Architecture and Data Flow](https://www.google.com/search?q=%233-system-architecture-and-data-flow)
-4. [Architecture Overview](https://www.google.com/search?q=%234-architecture-overview)
-5. [eCalc Ingestion](https://www.google.com/search?q=%235-ecalc-ingestion)
-6. [Component Knowledge and Evidence Retrieval](https://www.google.com/search?q=%236-component-knowledge-and-evidence-retrieval)
-7. [Configuration Compatibility Analysis](https://www.google.com/search?q=%237-configuration-compatibility-analysis)
-8. [Thermal Model and Nodes](https://www.google.com/search?q=%238-thermal-model-and-nodes)
-9. [Fault and Stress Library](https://www.google.com/search?q=%239-fault-and-stress-library)
-10. [Scenario Generation and Simulation](https://www.google.com/search?q=%2310-scenario-generation-and-simulation)
-11. [Sensor and Noise Modeling](https://www.google.com/search?q=%2311-sensor-and-noise-modeling)
-12. [Diagnosis Engines](https://www.google.com/search?q=%2312-diagnosis-engines)
-13. [Visualization and Validation Outputs](https://www.google.com/search?q=%2313-visualization-and-validation-outputs)
-14. [Explainability and Reporting](https://www.google.com/search?q=%2314-explainability-and-reporting)
-15. [Evaluation Harness and Metrics](https://www.google.com/search?q=%2315-evaluation-harness-and-metrics)
-16. [Optional Real-World Bench Validation](https://www.google.com/search?q=%2316-optional-real-world-bench-validation)
-17. [Repository Structure](https://www.google.com/search?q=%2317-repository-structure)
-18. [Tech Stack](https://www.google.com/search?q=%2318-tech-stack)
-19. [Quick Start](https://www.google.com/search?q=%2319-quick-start)
-20. [Roadmap](https://www.google.com/search?q=%2320-roadmap)
-21. [Risks and Limitations](https://www.google.com/search?q=%2321-risks-and-limitations)
-22. [Contributing and License](https://www.google.com/search?q=%2322-contributing-and-license)
+1. Overview
+2. Core Principles and Scope Limits
+3. System Architecture and Data Flow
+4. Architecture Overview
+5. eCalc Ingestion
+6. Component Knowledge and Evidence Retrieval
+7. Configuration Compatibility Analysis
+8. Thermal Model and Nodes
+9. Fault and Stress Library
+10. Scenario Generation and Simulation
+11. Sensor and Noise Modeling
+12. Diagnosis Engines
+13. Visualization and Validation Outputs
+14. Explainability and Reporting
+15. Evaluation Harness and Metrics
+16. Optional Real-World Bench Validation
+17. Repository Structure
+18. Tech Stack
+19. Quick Start
+20. Roadmap
+21. Risks and Limitations
+22. Contributing and License
 
 ## 1. Overview
 
@@ -83,9 +83,9 @@ Visualization & Validation (Curves, Loss Plots, Limits, Comparisons)
 
 ### Inputs (v1)
 
-- One or more **eCalc CSV files**, each describing one or more configurations (battery, ESC, motor, propeller, airframe, operating conditions, and the results eCalc calculated). See [section 5](https://www.google.com/search?q=%235-ecalc-ingestion).
-- **Datasheets** (PDF or extracted text) supplied by you, plus optional web retrieval of further evidence. See [section 6](https://www.google.com/search?q=%236-component-knowledge-and-evidence-retrieval).
-- Optional **measured logs** from a bench or flight test. See [section 16](https://www.google.com/search?q=%2316-optional-real-world-bench-validation).
+- One or more **eCalc CSV files**, each describing one or more configurations (battery, ESC, motor, propeller, airframe, operating conditions, and the results eCalc calculated). See section 5.
+- **Datasheets** (PDF or extracted text) supplied by you, plus optional web retrieval of further evidence. See section 6.
+- Optional **measured logs** from a bench or flight test. See section 16.
 
 ### Thermal nodes (v1)
 
@@ -260,7 +260,7 @@ Fields missing from the export stay **unknown**. They are never silently guessed
 ### 5.3 How the results are used
 
 - The operating points become the **load profile** that drives the physics core (section 8).
-- The eCalc-reported results (current, power, efficiency, and any loss or temperature values) become the **reference values** for the parity plots in section 13. Agreement with them is a consistency check on the model, not proof that either is correct (see [Risks](https://www.google.com/search?q=%2321-risks-and-limitations)).
+- The eCalc-reported results (current, power, efficiency, and any loss or temperature values) become the **reference values** for the parity plots in section 13. Agreement with them is a consistency check on the model, not proof that either is correct (see Risks).
 
 ## 6. Component Knowledge and Evidence Retrieval
 
@@ -389,7 +389,7 @@ Each flag maps to a **stress factor** in the physics core (see the fault and str
 
 ## 8A. Automatic Parameter Resolution and Model Retuning
 
-A central design requirement of `tcf` is that the user should **not need to manually enter every thermal, electrical, mechanical, or environmental parameter**. The toolkit uses a controlled parameter-resolution pipeline that extracts, derives, estimates, or calibrates missing values from the strongest available evidence.
+A central design requirement of `thermavolt` is that the user should **not need to manually enter every thermal, electrical, mechanical, or environmental parameter**. The toolkit uses a controlled parameter-resolution pipeline that extracts, derives, estimates, or calibrates missing values from the strongest available evidence.
 
 The resolution order is:
 
@@ -1956,36 +1956,36 @@ Bash
 pip install -e .
 
 # 2. Ingest eCalc CSV files into typed configurations
-tcf ingest --ecalc data/ecalc/*.csv
+thermavolt ingest --ecalc data/ecalc/*.csv
 
 # 3. Build component knowledge (your datasheets plus optional web search)
-tcf knowledge build --configs configs/ingested/ --datasheets knowledge/
+thermavolt knowledge build --configs configs/ingested/ --datasheets knowledge/
 ├── rag.yaml                  # RAG configuration, retrieval policy and source tiers
 datasheets/ --web
 
 # 4. Audit a configuration for mismatches
-tcf audit --config configs/ingested/cfg_001.json --out out/cfg_001_audit.md
+thermavolt audit --config configs/ingested/cfg_001.json --out out/cfg_001_audit.md
 
 # 5. Plot thermal propagation, load versus loss, and limit margins
-tcf plot --config configs/ingested/cfg_001.json --plots thermal,load-loss,limits
+thermavolt plot --config configs/ingested/cfg_001.json --plots thermal,load-loss,limits
 
 # 6. Compare configurations (less-heat validation)
-tcf compare --baseline cfg_001 --candidates cfg_002,cfg_003
+thermavolt compare --baseline cfg_001 --candidates cfg_002,cfg_003
 
 # 7. Generate a labelled dataset from configs
-tcf generate --config configs/experiments/baseline_dataset.yaml
+thermavolt generate --config configs/experiments/baseline_dataset.yaml
 
 # 8. Train the neural engine
-tcf train --engine neural --config configs/experiments/neural.yaml
+thermavolt train --engine neural --config configs/experiments/neural.yaml
 
 # 9. Evaluate all engines on held-out scenarios
-tcf evaluate --engines threshold,bayesian,neural,hybrid
+thermavolt evaluate --engines threshold,bayesian,neural,hybrid
 
 # 10. Diagnose a log file
-tcf diagnose --input logs/run_017.csv --engine hybrid --report out/run_017.md
+thermavolt diagnose --input logs/run_017.csv --engine hybrid --report out/run_017.md
 
 # 11. Launch the dashboard
-tcf dashboard
+thermavolt dashboard
 
 ```
 
@@ -1995,7 +1995,7 @@ The target CLI should support automatic parameter discovery and calibration:
 
 ```bash
 # Inspect all supplied project evidence
-tcf parameters discover \
+thermavolt parameters discover \
   --ecalc data/ecalc/ \
   --constraints data/constraints/ \
   --docs knowledge/
@@ -2004,20 +2004,20 @@ datasheets/ \
   --reports data/reports/
 
 # Resolve missing parameters using evidence, derivation and bounded estimates
-tcf parameters resolve \
+thermavolt parameters resolve \
   --config configs/ingested/cfg_001.json \
   --search \
   --uncertainty
 
 # Calibrate the physics model against eCalc
-tcf tune \
+thermavolt tune \
   --config configs/ingested/cfg_001.json \
   --reference data/ecalc/ \
   --method differential-evolution \
   --validate held-out
 
 # Include bench data when available
-tcf tune \
+thermavolt tune \
   --config configs/ingested/cfg_001.json \
   --reference data/ecalc/ \
   --bench data/bench/ \
@@ -2025,11 +2025,11 @@ tcf tune \
   --validate held-out
 
 # Show why each final parameter has its value
-tcf parameters explain \
+thermavolt parameters explain \
   --config configs/ingested/cfg_001.json
 
 # Find the most valuable missing measurement
-tcf parameters recommend-measurement \
+thermavolt parameters recommend-measurement \
   --config configs/ingested/cfg_001.json
 ```
 
@@ -2096,4 +2096,4 @@ This policy is essential because a numerically accurate model can still be physi
 
 Contributions, bug reports, and pull requests are welcome. Please ensure all code changes pass unit tests (`pytest`) and adhere to formatting guidelines (`black`, `ruff`).
 
-*Working name for the repository:* `thermal-fault-diagnosis-toolkit` (`tcf`)
+*Working name for the repository:* `thermal-fault-diagnosis-toolkit` (`thermavolt`)
